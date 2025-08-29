@@ -1,12 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My First Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Base Converter</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .converter {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  input, button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .result {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    color: #555;
+  }
+</style>
 </head>
 <body>
-  <h1>Hello World!</h1>
-  <p>This is my very first HTML page.</p>
+
+<div class="converter">
+  <h1>Number Base Converter</h1>
+  <input type="text" id="number" placeholder="Enter number">
+  <input type="number" id="fromBase" placeholder="Original base" min="2" max="36">
+  <input type="number" id="toBase" placeholder="Target base" min="2" max="36">
+  <button onclick="convertNumber()">Convert</button>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  function convertNumber() {
+    const numberStr = document.getElementById('number').value.trim();
+    const fromBase = parseInt(document.getElementById('fromBase').value);
+    const toBase = parseInt(document.getElementById('toBase').value);
+    const symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    function charToValue(char) {
+      return symbols.indexOf(char.toUpperCase());
+    }
+
+    function valueToChar(value) {
+      return symbols[value];
+    }
+
+    // Convert input to base 10
+    let base10Number = 0;
+    for (let digit of numberStr) {
+      base10Number = base10Number * fromBase + charToValue(digit);
+    }
+
+    // Convert base10 to target base
+    if (base10Number === 0) {
+      document.getElementById('result').textContent = "Converted number: 0";
+      return;
+    }
+
+    let result = "";
+    while (base10Number > 0) {
+      result = valueToChar(base10Number % toBase) + result;
+      base10Number = Math.floor(base10Number / toBase);
+    }
+
+    document.getElementById('result').textContent = "Converted number: " + result;
+  }
+</script>
+
 </body>
 </html>
-
